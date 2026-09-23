@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Panel study notes — Parts II and III</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#032D60;--ink:#12395F;--body:#31414F;--mute:#6A7684;--rule:#DCE4EC;
+ --soft:#F0F6FC;--volt:#0176D3;--deep:#014486;--green:#22683C;--paper:#fff;--bg:#F7F9FC;
+ --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Helvetica,Arial,sans-serif;
+ --mono:ui-monospace,SFMono-Regular,Menlo,monospace}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--body);line-height:1.62;
+ font-size:16.5px;-webkit-font-smoothing:antialiased}
+.wrap{display:grid;grid-template-columns:266px minmax(0,1fr);gap:48px;
+ max-width:1180px;margin:0 auto;padding:0 28px}
+header{border-bottom:1px solid var(--rule);background:var(--paper)}
+.hin{max-width:1180px;margin:0 auto;padding:30px 28px 26px}
+header h1{font-size:27px;line-height:1.2;color:var(--navy);letter-spacing:-.02em;font-weight:750}
+header p{color:var(--mute);margin-top:7px;font-size:14.5px}
+#toc{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;
+ padding:30px 0 60px;font-size:13.5px}
+.tochd,.navpart{font-family:var(--mono);font-size:10px;letter-spacing:.17em;text-transform:uppercase;
+ color:var(--mute);font-weight:650;margin:0 0 10px}
+.navpart{margin:22px 0 9px}
+#toc a{display:flex;gap:9px;padding:5px 9px 5px 0;color:var(--ink);text-decoration:none;
+ border-radius:6px;line-height:1.38}
+#toc a b{font-family:var(--mono);font-size:10.5px;color:var(--volt);flex:none;min-width:15px;padding-top:2px}
+#toc a:hover{color:var(--volt)}
+#toc a.t{font-weight:650;color:var(--navy)}
+main{padding:30px 0 100px;min-width:0}
+.part{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+ color:var(--volt);font-weight:700;margin:34px 0 14px}
+section:first-child .part{margin-top:0}
+article{background:var(--paper);border:1px solid var(--rule);border-radius:13px;
+ padding:28px 30px 30px;margin-bottom:20px;box-shadow:0 1px 2px rgba(3,45,96,.04)}
+.num{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;
+ color:var(--volt);font-weight:650}
+.num span{color:var(--mute);font-weight:400}
+article h3{font-size:22.5px;color:var(--navy);letter-spacing:-.018em;margin:7px 0 12px;line-height:1.25;font-weight:700}
+.head{font-size:17.5px;color:var(--ink);font-weight:600;line-height:1.45;
+ border-left:3px solid var(--volt);padding:2px 0 2px 15px;margin-bottom:15px}
+.job{background:var(--soft);border-radius:9px;padding:12px 15px;font-size:15px;margin-bottom:4px}
+.job b{color:var(--navy)}
+article h4{font-family:var(--mono);font-size:10px;letter-spacing:.17em;text-transform:uppercase;
+ color:var(--mute);font-weight:650;margin:24px 0 10px;padding-top:15px;border-top:1px solid var(--rule)}
+article p{margin-bottom:11px}
+article p strong{color:var(--navy);font-weight:650}
+.quote{font-size:17px;color:var(--ink);font-style:italic;background:var(--soft);
+ border-radius:9px;padding:15px 18px}
+dl{margin:0}
+dt{font-weight:650;color:var(--navy);margin-top:13px;font-size:15.5px}
+dt:first-child{margin-top:0}
+dd{margin:3px 0 0;font-size:15px;color:var(--body)}
+dl.qa dt::before{content:"“"}dl.qa dt::after{content:"”"}
+code{font-family:var(--mono);font-size:.87em;background:var(--soft);color:var(--deep);
+ padding:1px 5px;border-radius:4px}
+em{font-style:italic;color:var(--ink)}
+@media (max-width:900px){
+ .wrap{grid-template-columns:1fr;gap:0;padding:0 18px}
+ #toc{position:static;max-height:none;padding:20px 0 6px;border-bottom:1px solid var(--rule);margin-bottom:18px}
+ #toc a{padding:4px 0}
+ article{padding:22px 20px 24px}
+ header h1{font-size:22px}
+}
+@media print{
+ body{background:#fff;font-size:11pt}
+ #toc,header p{display:none}
+ .wrap{display:block;max-width:none;padding:0}
+ article{break-inside:avoid;page-break-inside:avoid;border:0;border-top:1px solid #ccc;
+  border-radius:0;box-shadow:none;padding:14px 0;margin:0}
+ .job{background:#f4f4f4}
+}
+</style>
+</head><body>
+<header><div class="hin">
+<h1>Panel study notes &mdash; Parts II and III</h1>
+<p>What every slide says, what to say out loud, what the technical terms mean, and the questions to expect. Dennis Sch&auml;rer &middot; Forward Deployed Engineer panel.</p>
+</div></header>
+<div class="wrap">
+<nav id="toc"><div class="tochd">Contents</div><a class="t" href="#thesis">The thesis</a><div class="navpart">Part II</div><a href="#ii-1"><b>1</b>Sonova — the context</a><a href="#ii-2"><b>2</b>The problem</a><a href="#ii-3"><b>3</b>Design — what I built</a><a href="#ii-4"><b>4</b>How the whole thing is wired</a><a href="#ii-5"><b>5</b>Design — decisions and detail</a><a href="#ii-6"><b>6</b>Build</a><a href="#ii-7"><b>7</b>What broke</a><a href="#ii-8"><b>8</b>Test — how I validated it</a><a href="#ii-9"><b>9</b>Deploy &amp; monitor</a><a href="#ii-10"><b>10</b>Stakeholder management</a><div class="navpart">Part III</div><a href="#iii-1"><b>1</b>Jobcloud — the context</a><a href="#iii-2"><b>2</b>Use case selection</a><a href="#iii-3"><b>3</b>Discovery</a><a href="#iii-4"><b>4</b>Solution design</a><a href="#iii-5"><b>5</b>Scope, and what done means</a><a href="#iii-6"><b>6</b>How I&#x27;d prove it works</a><a href="#iii-7"><b>7</b>Three risks</a></nav>
+<main>
+<section id="thesis"><h2 class="part">The thesis</h2><article>
+<p class="head">&ldquo;Agentic systems don&rsquo;t fail loudly. They fail fluently.&rdquo;</p>
+<p class="job"><b>What this slide is for.</b> The sentence the whole hour hangs on. If you can explain this cleanly, everything else in Part II and Part III is evidence for it.</p>
+<h4>What to say</h4>
+<p>Normal software fails loudly. A stack trace, a red test, a 500, something obviously wrong on screen. The failure announces itself, and it announces itself <em>in the output</em> &mdash; because in normal software the output is mechanically coupled to the steps that produced it. If the database call returns nothing, the page is empty or it throws.</p>
+<p>An agentic system breaks that coupling. The thing producing the visible output is a language model, and its fluency is completely independent of whether the steps underneath worked. Hand it real patient data and it writes a warm, well-formed German paragraph. Hand it <em>nothing</em> and it writes a warm, well-formed German paragraph. The failure happened in a layer below the one you are reading, and that layer leaves no fingerprint on the prose.</p>
+<p>Which is why every normal signal stays green. No exception thrown. HTTP 200. The action reports complete. The agent replied, in the right language, at normal latency. Every dashboard you would build for conventional software says the system is healthy &mdash; because by conventional standards it is.</p>
+<p>And the model&rsquo;s training makes it worse: it is optimised to be helpful and coherent. Given nothing to say, it produces the generic shape of a good answer. Confidence is its default register, not evidence that it is right.</p>
+<p><b>Why it matters:</b> a fluent wrong answer is worse than no answer, because people act on it. Margret gets a warm message from her clinic containing nothing real about her, and she believes it. A silent failure would at least be noticed.</p>
+<p><b>Your two proofs, different causes, identical symptom.</b> At Sonova, a variable holding the patient&rsquo;s email was declared mutable, so the channel never populated it &mdash; the query matched nothing, the model was handed nothing, and it wrote fluent German anyway. At Jobcloud, a missing Apex permission made the runtime silently skip an action, so the agent invented a customer ID: it pulled &ldquo;Romeo&rdquo; out of an email address and fabricated S0004442.</p>
+<h4>Saying it in the room</h4>
+<p class="quote">&ldquo;Normal software fails loudly &mdash; it throws, it goes red, you see it. Agentic systems don&rsquo;t. They keep answering, warmly and confidently, while the data underneath is empty. Everything you&rsquo;d normally monitor says it&rsquo;s fine. That&rsquo;s what I mean by failing fluently &mdash; the fluency is what hides the failure.&rdquo;</p>
+<h4>If they ask</h4>
+<dl class="qa">
+<dt>Isn&rsquo;t that just hallucination?</dt><dd>Worth separating. Hallucination usually means the model inventing things out of its own weights &mdash; a model-quality problem. This is narrower and more operational: the engineering around the model failed, the model was handed nothing, and it filled the gap. You can&rsquo;t prompt your way out of it, because the prompt was never the problem. That reframes it from &ldquo;LLMs are unreliable&rdquo; to &ldquo;the system around the LLM failed and the LLM camouflaged it&rdquo; &mdash; which is something you can engineer against.</dd>
+<dt>So how do you defend against it?</dt><dd>Stop asserting on the words, because the words are the thing that lies. Assert on behaviour and on the action&rsquo;s real inputs and outputs. Check the system of record rather than whatever tool reports success. Make the code incriminate itself with a deliberate error or a marker. And draw the determinism line: numbers, consent and whether a device actually changed live in code; only the wording belongs to the model.</dd>
+</dl>
+</article></section>
+<section id="ii"><h2 class="part">Part II</h2>
+<article id="ii-1">
+<div class="num">Slide 1 <span>&middot; Part II · the context</span></div>
+<h3>Sonova — the context</h3>
+<p class="head">&ldquo;Sonova and the Geers clinics: catching a hearing-aid trial that fails quietly, on day nine.&rdquo;</p>
+<p class="job"><b>What this slide is for.</b> Stops them wondering what they are looking at. Customer, end users, use case, and — critically — what kind of artefact this is. Thirty seconds.</p>
+<h4>What to say</h4>
+<p>Sonova is the Swiss hearing-care group behind Phonak. Geers is the German retail chain Sonova owns — the shops where an audiologist actually fits the devices. That matters commercially: a hearing aid is sold through a 30-day home trial, and the trial either ends in a purchase or it doesn&#x27;t.</p>
+<p>Two end users. Margret, at home with a trial pair. And her audiologist at the clinic, who sees her twice in thirty days and is the person who has to act on anything the system finds.</p>
+<p>The use case in one line: notice from the device data that a trial is going wrong, reach the patient in her own language, and fix it if she agrees — without anyone in the clinic lifting a finger. Care <em>during</em> the trial instead of a post-mortem at the end.</p>
+<p>Then say the honest sentence, plainly and without hedging: this was scoped with Sonova, designed and built by me, on a demo org made to mirror their setup. Not production, and not a customer sandbox. Everything you&#x27;ll see runs live — only the four external systems are simulated. Say it now so nobody has to ask later.</p>
+<h4>Terms on this slide</h4><dl>
+<dt>Demo org</dt><dd>A Salesforce org used for demonstrations. Not the customer&#x27;s own environment, and no real patient data. The distinction from a customer sandbox matters and you should keep it sharp all hour.</dd>
+<dt>Customer sandbox</dt><dd>A copy of the customer&#x27;s own environment, connected to their real systems. Nespresso and Avolta were those. Sonova was not.</dd>
+<dt>Proof of concept</dt><dd>Here: a demo pushed as close to the customer&#x27;s real setup as possible, with the scenario agreed with the customer up front. More than a demo, less than an implementation.</dd>
+</dl>
+<h4>If they ask</h4><dl class="qa">
+<dt>Why not just build it in their sandbox?</dt><dd>That requires access, a data agreement and someone on their side who owns it. For a pre-sales conversation that hasn&#x27;t happened yet, a demo org that mirrors their setup is the honest and fast option.</dd>
+<dt>Is Margret a real patient?</dt><dd>No — a persona built with Sonova. The behaviour she models is real: patients who stop wearing the devices and never say so.</dd>
+</dl>
+</article>
+<article id="ii-2">
+<div class="num">Slide 2 <span>&middot; 1 · The problem</span></div>
+<h3>The problem</h3>
+<p class="head">&ldquo;A hearing-aid trial lasts 30 days. Nobody finds out how it went until day 30.&rdquo;</p>
+<p class="job"><b>What this slide is for.</b> The business case, told as a story about a person rather than a use case. Sixty seconds.</p>
+<h4>What to say</h4>
+<p>Margret Keller, 67, retired teacher in Köln. She waited years before doing anything about her hearing — that is typical, and it matters, because people who waited that long are easily discouraged. She is fitted at the Geers clinic and sent home for thirty days.</p>
+<p>Around day nine she is at a family dinner in a restaurant. She can&#x27;t follow her grandchildren, so she turns her left device up, again and again. Her daily wear time falls from about twelve hours to three.</p>
+<p>Now the line that does all the work: <strong>she doesn&#x27;t complain and she doesn&#x27;t call.</strong> She just wears them less, then not at all. Her audiologist finds out at the closing appointment, three weeks too late to save it.</p>
+<p>Then the business framing: a trial that fails quietly is a lost sale, a wasted clinic appointment, and a person who goes back to not hearing. And the point that sets up everything after it — the signal was sitting in the device data on day nine. Nobody was looking.</p>
+<h4>Terms on this slide</h4><dl>
+<dt>Wear time</dt><dd>Hours per day the hearing aids are actually worn. Reported by the devices themselves. The single best indicator of whether a trial is going well.</dd>
+<dt>Volume adjustments</dt><dd>How often the wearer manually changes the volume, and on which ear. Repeated changes on one ear in a noisy place is a classic signal of difficulty.</dd>
+</dl>
+<h4>If they ask</h4><dl class="qa">
+<dt>Wouldn&#x27;t a satisfaction survey catch this?</dt><dd>No — and that&#x27;s the point. A survey relies on her telling you. She won&#x27;t. The device data doesn&#x27;t rely on her saying anything.</dd>
+<dt>Is this a real number, twelve hours to three?</dt><dd>It&#x27;s the scenario we built and seeded. The pattern — usage collapse after a bad experience — is the real phenomenon.</dd>
+</dl>
+</article>
+<article id="ii-3">
+<div class="num">Slide 3 <span>&middot; 2 · Design</span></div>
+<h3>Design — what I built</h3>
+<p class="head">&ldquo;The platform notices on day nine and fixes her hearing aids the same evening — if she says yes.&rdquo;</p>
+<p class="job"><b>What this slide is for.</b> What the system actually does, as a five-step loop. This is the product in one line. Ninety seconds.</p>
+<h4>What to say</h4>
+<p><strong>Step one, day nine.</strong> Her hearing aids report repeated left-ear volume increases and a collapse in wear time. Her trial-risk score flips to High. Say this out loud: that score is calculated in code, not judged by a model. It&#x27;s a rule, and I can show you the rule.</p>
+<p><strong>Step two.</strong> She gets a message in German, from her own clinic, that quotes her actual figures back to her — her hours, the day she started turning it up — and offers two choices: fix it now, or book time with your audiologist.</p>
+<p><strong>Step three.</strong> She says <em>ja</em>. Only then does anything happen. Consent is a gate in Apex code, not a sentence in a prompt asking the model to behave. Nothing reaches her devices before she agrees.</p>
+<p><strong>Step four.</strong> Restaurant Mode — a setting tuned for noisy rooms — is pushed to her hearing aids over the air and logged on her record. Her next restaurant evening reads clean.</p>
+<p><strong>Step five, day thirty.</strong> The closing report is generated from her own trial data and ends with a recommendation that she buy the devices.</p>
+<p>Then the footline, slowly, because it&#x27;s the decision you&#x27;re proudest of: two agents, one shared grounding action. Her agent can act, consent-gated. The clinician&#x27;s copilot reads and drafts but cannot act. Both call the same Apex action — so there is no drift between what the patient was told and what the clinician sees.</p>
+<h4>Terms on this slide</h4><dl>
+<dt>Apex</dt><dd>Salesforce&#x27;s server-side programming language. Anything you want to be deterministic, auditable and testable lives here rather than in a prompt.</dd>
+<dt>Over the air / OTA</dt><dd>Changing a setting on a physical device remotely, without the person coming into the shop.</dd>
+<dt>Grounding action</dt><dd>The tool an agent calls to fetch real data, so its answer is anchored in facts rather than generated from the model&#x27;s own memory. Yours is called SonovaCarePilotAction.</dd>
+<dt>Consent-gated</dt><dd>The action physically cannot run until a consent record exists. Enforced in code, so it can&#x27;t be talked around.</dd>
+</dl>
+<h4>If they ask</h4><dl class="qa">
+<dt>Why does the copilot not act?</dt><dd>A clinician should decide. And I wanted exactly one thing in the build capable of changing a hearing aid, so there is one place to audit.</dd>
+<dt>What if she ignores the message?</dt><dd>In the build, nothing further happens. In production that&#x27;s where you&#x27;d escalate — after 48 hours, push it to the contact-centre call list with full context.</dd>
+</dl>
+</article>
+<article id="ii-4">
+<div class="num">Slide 4 <span>&middot; 2 · Design — the architecture</span></div>
+<h3>How the whole thing is wired</h3>
+<p class="head">&ldquo;Signal in on the left, action out on the right, and everything in between is something I built.&rdquo;</p>
+<p class="job"><b>What this slide is for.</b> The full architecture. Hand this one ninety seconds and walk it left to right, once, without stopping.</p>
+<h4>What to say</h4>
+<p><strong>Far left — four simulated external systems.</strong> One Node app on Heroku presenting four separate systems: the myPhonak companion app that reports wear time and volume changes; the remote fine-tune console the audiologist uses; the Geers online hearing check; and ClinicOS, the third-party practice-management system. They are stand-ins, but they push real payloads over real HTTP into Data 360 through the Ingestion API. The simulation stops at the boundary — everything to the right of it is the real platform doing real work.</p>
+<p><strong>Data 360.</strong> Four streams land there. Identity resolution ties them to one person — an anonymous website visitor becomes a known patient the moment she logs in. Calculated insights and segments sit on top. And her risk is scored in Apex from her own readings. Say that line every time.</p>
+<p><strong>The Apex action layer.</strong> Six actions. This is the complete list of things either agent is able to do: the shared read, push an adjustment, hand off to her audiologist, take a web booking, convert the trial, send a push notification. Nothing else is reachable.</p>
+<p><strong>Two agents.</strong> The Service Agent is patient-facing, in German, and can act — but only after consent. The Care Copilot is staff-facing, in English, sits in the patient record, and reads and drafts only.</p>
+<p><strong>Where people meet it.</strong> Her phone, her inbox, the clinician&#x27;s record, and her hearing aids.</p>
+<p><strong>Then the dotted green line</strong> — this is the bit worth pausing on. The fix goes out to the devices and shows up in the next night&#x27;s readings, which flow back in through the same pipe. The same data that raised the alarm is what closes it. It&#x27;s a closed loop, not a one-way notification.</p>
+<p><strong>The bottom band</strong> is what it leaves behind in Salesforce and what drives it. Don&#x27;t read it out. It&#x27;s there for the questions.</p>
+<h4>Terms on this slide</h4><dl>
+<dt>Data 360</dt><dd>The current name for Salesforce Data Cloud. A data platform that ingests streams from many systems, resolves them to a single customer profile, and makes that available to the rest of the platform.</dd>
+<dt>Ingestion API</dt><dd>The interface external systems use to push records into Data 360 in near real time.</dd>
+<dt>Identity resolution</dt><dd>Matching records that arrive from different systems — different keys, different formats — onto one unified profile of one person.</dd>
+<dt>Calculated insight</dt><dd>A pre-computed metric derived from ingested data, e.g. trial telemetry aggregates, so it doesn&#x27;t have to be calculated at answer time.</dd>
+<dt>Segment</dt><dd>A defined audience built from profile and insight data, used to target outreach.</dd>
+<dt>DLO / DMO</dt><dd>Data Lake Object and Data Model Object — the raw landing table and the modelled, queryable version of it in Data 360.</dd>
+<dt>Agent API</dt><dd>The programmatic interface for talking to an Agentforce agent from outside Salesforce — how the web app drives the conversation.</dd>
+<dt>Heroku</dt><dd>Salesforce&#x27;s platform for running application code. Used here to host the simulated external systems.</dd>
+</dl>
+<h4>If they ask</h4><dl class="qa">
+<dt>Which parts are simulated?</dt><dd>Only the four systems on the far left. From the Ingestion API rightwards it&#x27;s the real platform.</dd>
+<dt>Why simulate them at all?</dt><dd>Because the customer&#x27;s device platform and practice system aren&#x27;t connected to a demo org — and wouldn&#x27;t be until there&#x27;s a data agreement. Simulating the source while keeping the interface real is what makes it a proof of concept rather than a mock-up.</dd>
+<dt>How many Apex classes is this?</dt><dd>Around twenty, of which six are the invocable actions the agents can call. The rest are services and controllers behind the pages.</dd>
+</dl>
+</article>
+<article id="ii-5">
+<div class="num">Slide 5 <span>&middot; 2 · Design — key choices</span></div>
+<h3>Design — decisions and detail</h3>
+<p class="head">&ldquo;What I picked, what I ruled out, and what the one shared action actually does.&rdquo;</p>
+<p class="job"><b>What this slide is for.</b> The engineering heart of Part II. Two minutes. Left side is depth, right side is judgement.</p>
+<h4>What to say</h4>
+<p><strong>Left — inside the shared read.</strong> In: one patient email, from either channel. The web app passes it through the Agent API; on the email channel the platform fills it in from the sender. One action serves both, which is why there&#x27;s only one thing to fix.</p>
+<p><strong>Read:</strong> it queries Data 360 directly — device data, contact-centre calls, marketing engagement, web screening, plus the single profile built from all four.</p>
+<p><strong>Score:</strong> the risk rule, and say it out loud because it&#x27;s the difference between a clinician trusting this and not: six or more volume changes on one ear in a day, <em>or</em> daily wear under nine hours, means High risk. That&#x27;s it. A rule I can show a clinician and they can argue with.</p>
+<p><strong>Out:</strong> it returns eleven fields, a written summary, and a recommended next step — and that next step is chosen by the risk level, not by the model.</p>
+<p><strong>Right — the four decisions.</strong> Read the left column and let them read the right. One shared read rather than an action each, because two actions means two places to fix and eventually two versions of the truth. Risk in code rather than model judgement, because I couldn&#x27;t defend a model&#x27;s opinion to a clinician. One profile in Data 360 rather than querying four systems at answer time, because it&#x27;s too slow for a conversation and nothing would tie the records to one person. Consent in the data rather than in the instructions, because a rule you can&#x27;t show anyone isn&#x27;t a rule.</p>
+<p>Close on the pattern: <strong>the model handles the conversation, the code holds the judgement.</strong></p>
+<h4>Terms on this slide</h4><dl>
+<dt>Invocable action</dt><dd>An Apex method exposed so an agent or a Flow can call it. It has a declared input and output shape, which is what makes the agent&#x27;s behaviour predictable.</dd>
+<dt>SOQL</dt><dd>Salesforce&#x27;s query language. Here it means the action reads Data 360 directly rather than going through a web API.</dd>
+<dt>Typed fields</dt><dd>The action returns named, structured values — not a paragraph. The model narrates them; it never invents them.</dd>
+<dt>Eleven fields</dt><dd>Unified id, days of data, average wear time, latest wear time, the flagged day, risk level, linked sources, contact-centre call count, engagement count, plus the summary and the recommended action.</dd>
+</dl>
+<h4>If they ask</h4><dl class="qa">
+<dt>Why not let the model decide the risk?</dt><dd>Because I&#x27;d have to defend it. A number I can recompute and show you beats a judgement you&#x27;d have to trust me on. And a clinician can disagree with a rule — they can&#x27;t disagree with a black box.</dd>
+<dt>Isn&#x27;t a hard-coded threshold brittle?</dt><dd>Yes, and in production it should be tunable and reviewed with clinicians. But a brittle rule you can see beats a flexible judgement you can&#x27;t.</dd>
+<dt>What did you delete?</dt><dd>I built my own audience builder and threw it away — the standard segment builder was better. Good engineering is partly what you remove.</dd>
+</dl>
+</article>
+<article id="ii-6">
+<div class="num">Slide 6 <span>&middot; 3 · Build</span></div>
+<h3>Build</h3>
+<p class="head">&ldquo;Scope, then data, then actions, then words. In that order, and never the other way round.&rdquo;</p>
+<p class="job"><b>What this slide is for.</b> Answers their &#x27;how did you develop it, who was involved, what tools&#x27;. Sixty seconds. The order is the argument.</p>
+<h4>What to say</h4>
+<p>The order is the whole point, so lead with it. Most agent demos are built in exactly the reverse order — someone writes clever instructions first, then tries to find data to back them up — and that&#x27;s why they fall over.</p>
+<p><strong>Scope first.</strong> One sentence describing what the proof of concept had to show. Everything that didn&#x27;t serve it went on a written list marked <em>not this time</em>.</p>
+<p><strong>Data second.</strong> Five feeds, the Ingestion API and identity resolution, before a single instruction was written. An agent grounded in half a profile is worse than no agent, because it answers confidently from a partial picture.</p>
+<p><strong>Actions third.</strong> Every capability is an Apex action with a strict input and output shape. The agent&#x27;s written instructions came last, once there was something real for it to call.</p>
+<p><strong>All of it in a repository.</strong> Source-tracked metadata, deployed from the command line. I can tell you what changed, when, and roll it back.</p>
+<p><strong>Who was involved:</strong> I designed, built and tested it. Sonova&#x27;s team defined the scenario with us. Our account team owned the relationship. I pulled in Data 360 and Agentforce colleagues when I hit the edges of the platform. Keep this short and factual.</p>
+<p>The tooling chips are there if they ask. Don&#x27;t read them out.</p>
+<h4>Terms on this slide</h4><dl>
+<dt>Source-tracked metadata</dt><dd>The org&#x27;s configuration lives as files in a Git repository, so changes are versioned, reviewable and reversible — rather than clicked into an org and forgotten.</dd>
+<dt>Agentforce DX</dt><dd>The developer tooling for building agents as code: authoring bundles, the sf command-line interface, preview and traces, test specs sitting next to the code.</dd>
+<dt>sf CLI</dt><dd>Salesforce&#x27;s command-line tool. Deploys metadata, runs Apex, previews agents, runs agent tests.</dd>
+<dt>Agent Studio</dt><dd>The point-and-click environment for configuring an agent&#x27;s topics, instructions and actions.</dd>
+<dt>Claude Code</dt><dd>An AI coding assistant. Worth naming — you work AI-assisted and own the output; better to say so than have it be a discovery.</dd>
+</dl>
+<h4>If they ask</h4><dl class="qa">
+<dt>How long did it take?</dt><dd>Keep it honest and unfussy — it was built over a focused period alongside the day job. What matters is the order it was built in.</dd>
+<dt>Did you write all the Apex yourself?</dt><dd>I architected, directed, reviewed and debugged it, working AI-assisted, and I own the output. I&#x27;d rather be judged on the work than on how it was typed.</dd>
+</dl>
+</article>
+<article id="ii-7">
+<div class="num">Slide 7 <span>&middot; 4 · Test — what broke</span></div>
+<h3>What broke</h3>
+<p class="head">&ldquo;One symptom. Four separate causes. And the tool that hid the real one.&rdquo;</p>
+<p class="job"><b>What this slide is for.</b> The centrepiece of the hour, and the proof of the thesis. Two minutes. Click through, then stop talking and let them read.</p>
+<h4>What to say</h4>
+<p>Set it up in one line: one symptom — a warm, fluent German reply containing nothing real about Margret — and four separate causes underneath it, plus the tool that hid the worst one.</p>
+<p><strong>Step 0, as shipped.</strong> The reply is polite, correct German, and completely empty. In the CLI preview it had looked perfect. What I assumed was that it was reasoning and being vague. It wasn&#x27;t reasoning at all — the planner never ran.</p>
+<p><strong>Bug 1 — language.</strong> German wasn&#x27;t an enabled language on the agent. An agent receiving an unsupported language never runs topic reasoning at all. Enabling German exposed the next bug.</p>
+<p><strong>Bug 2 — the progress indicator.</strong> A &#x27;working on it&#x27; indicator is a harmless little chip on a synchronous chat surface. On an asynchronous email channel it becomes a whole standalone email, and the turn ends there. She gets a &#x27;please hold&#x27; and nothing else, ever.</p>
+<p><strong>Bug 3 — the card.</strong> The action returned four real values, but they were flagged as displayable, meaning they render as a card. Email has no card slot, so every value was dropped and only the model&#x27;s wrapper text survived. The version that had looked grounded was seen in preview — which is synchronous. The surface changed the output, and I was testing on the wrong one.</p>
+<p><strong>Bug 4 — the real one.</strong> The variable holding her email address was declared mutable, and mutable variables are not auto-populated by the channel. So the email was empty, the query matched nothing, the model was handed nothing — and it produced fluent German anyway.</p>
+<p><strong>And the line to land:</strong> CLI Preview masked it the entire time, because the preview tester injects that variable by hand. The tool I was using to prove it worked was the reason I couldn&#x27;t see it was broken.</p>
+<p><strong>Fixed state.</strong> Same warmth, but now every figure is real and came from Data 360. The transferable lesson: verify grounding by reading the output for real values, not by trusting that the action returned them.</p>
+<h4>Terms on this slide</h4><dl>
+<dt>Topic reasoning / the planner</dt><dd>The step where the agent decides which topic handles the question and which actions to call. If it never runs, you get generic text with no data behind it.</dd>
+<dt>Synchronous vs asynchronous channel</dt><dd>Chat is synchronous — a live back-and-forth. Email is asynchronous — each turn is a separate message. The same agent behaves differently on each, which is exactly what bit you.</dd>
+<dt>Progress indicator</dt><dd>A &#x27;working on it&#x27; signal. Harmless on chat, a complete outbound email on an async channel.</dd>
+<dt>Displayable / card rendering</dt><dd>A flag that tells the runtime to render values as a formatted card. If the surface has no card slot, the values are dropped entirely.</dd>
+<dt>Mutable variable</dt><dd>A variable the conversation can change during the session. Because it can be changed, the channel does not populate it automatically — which is why hers stayed empty.</dd>
+<dt>CLI Preview</dt><dd>A command-line tool for testing an agent turn by turn. Its tester injects variable values by hand, which is precisely why it hid this bug.</dd>
+</dl>
+<h4>If they ask</h4><dl class="qa">
+<dt>How long did this take to find?</dt><dd>About two days. An automated evaluation suite would have caught three of the four in an afternoon, which is why it&#x27;s the thing I&#x27;d do differently.</dd>
+<dt>Is this a platform bug?</dt><dd>No — every one of these is documented behaviour. The failure was that nothing in the chain surfaced it. Four reasonable individual behaviours combined into a silent failure.</dd>
+</dl>
+</article>
+<article id="ii-8">
+<div class="num">Slide 8 <span>&middot; 4 · Test</span></div>
+<h3>Test — how I validated it</h3>
+<p class="head">&ldquo;Three rules I test by, because every tool in the chain lied to me at least once.&rdquo;</p>
+<p class="job"><b>What this slide is for.</b> Their &#x27;how did you validate it, and how do you handle non-determinism&#x27;. Ninety seconds.</p>
+<h4>What to say</h4>
+<p><strong>Rule one — check the org, never the tool.</strong> The CLI preview, the publish output and the agent&#x27;s own cheerful reply had each lied at least once. The truth is in the org: the actual record, the actual action log. Not in whatever surface is reporting success.</p>
+<p><strong>Rule two — make the code give itself away.</strong> Put a deliberate error at the top of the action so it has to crash. If the agent still answers cheerfully, the action never ran. Or stamp a unique marker into its output and go looking for that marker in the reply. It&#x27;s the fastest way to know whether something actually executed.</p>
+<p><strong>Rule three — never test on the record the demo needs.</strong> Failure path with an unknown address, success path with a second patient, never Margret. Converting her trial was only ever unit-tested, because running it for real changes the data the demo has to start from.</p>
+<p><strong>Then non-determinism, and this is the one they&#x27;ll test you on.</strong> The same question arrives a dozen ways and several replies are equally fine. So I stopped checking the words and started checking the behaviour: right topic, right action, her real figures. The wording may vary. Numbers, consent, and whether a device actually changed may not — those are computed in code and verified exactly. The model narrates them; it never produces them.</p>
+<p><strong>Then the gap, plainly.</strong> Four automated tests — booking, device data, trial conversion, the audiologist handoff — and I run each action on its own so I can read exactly what it returns. But checking the agent itself was manual: scripted calls, a real push to a real iPhone, a written dress rehearsal. There is no automated agent test suite on this build. Say it and pivot straight into the next slide.</p>
+<h4>Terms on this slide</h4><dl>
+<dt>Unit test</dt><dd>An automated test of one piece of code in isolation. Salesforce requires them and runs them on deployment.</dd>
+<dt>Anonymous Apex</dt><dd>Running a snippet of code directly against the org, outside any class — how you call an action on its own and read exactly what it returns.</dd>
+<dt>Non-determinism</dt><dd>The same input can produce different valid outputs. Normal software is deterministic; a language model is not, which is why you can&#x27;t assert on exact text.</dd>
+<dt>Evaluation suite / agent tests</dt><dd>Automated tests that run real questions against the agent and assert on which topic fired, which actions ran, and whether the response contains the expected values.</dd>
+</dl>
+<h4>If they ask</h4><dl class="qa">
+<dt>How do you test something that answers differently every time?</dt><dd>You stop asserting on the text and assert on behaviour and the action&#x27;s real inputs and outputs. And you draw a line: the facts are computed in code and checked exactly, only the wording is allowed to vary.</dd>
+<dt>Why no automated agent tests here?</dt><dd>Time, and I chose to spend it on the data foundation. It was the wrong trade and it&#x27;s the one thing I&#x27;d change — on another build I did write the test specs and evaluation definitions.</dd>
+<dt>What&#x27;s an LLM judge and would you use one?</dt><dd>A model scoring another model&#x27;s answer. Useful for tone at scale, dangerous alone — a fluent reply is exactly what fools it. Use it on top of assertions about the action&#x27;s real I/O, never instead of them.</dd>
+</dl>
+</article>
+<article id="ii-9">
+<div class="num">Slide 9 <span>&middot; 5 · Deploy &amp; monitor</span></div>
+<h3>Deploy &amp; monitor</h3>
+<p class="head">&ldquo;It ran in front of the customer, not patients — and I can name the exact distance to production.&rdquo;</p>
+<p class="job"><b>What this slide is for.</b> Their &#x27;how did it go live, how do you know it&#x27;s working&#x27;. Ninety seconds, most of it on the middle column.</p>
+<h4>What to say</h4>
+<p><strong>How it went live.</strong> Everything lives in a repository and deploys from the command line into a demo org built to mirror their setup. Switching the agent on is a separate, deliberate step from deploying the code. Then a full dress rehearsal end to end against a written runbook, failure paths included, so nothing was discovered live in front of the customer.</p>
+<p><strong>Then the precise line, without hedging:</strong> not production, and not a customer sandbox either. Two other engagements have put me in a customer sandbox wired to live systems. This wasn&#x27;t one of them.</p>
+<p><strong>What I&#x27;d watch, from day one — spend your time here,</strong> because &#x27;how do you know it&#x27;s working&#x27; is the question most people can&#x27;t answer. Session tracing turn by turn: response time, cost, error rate, and conversations that ended nowhere. Did the action fire and succeed, per action per day, with the trace attached when it didn&#x27;t. Did she accept — the share of outreach ending in an adjustment or a booking — and did the fix hold, measured in wear time afterwards.</p>
+<p><strong>And the last one, which is the one that separates an engineer from a demo builder:</strong> did the signal stop? Telemetry stops arriving, the agent goes quiet, and everything looks fine. Nothing in a normal dashboard catches that. It needs an alarm of its own.</p>
+<p><strong>What production would demand on top:</strong> real integrations instead of my simulator, with retries and someone to call at 2am. Health data treated as health data — retention, access, auditability, a lawful basis for every message, consent provable rather than merely present. Automated evaluations in the pipeline, refusing to release when they fail. And a gradual rollout — one clinic, then a region — with a tested way back.</p>
+<p>Close on: the distance to production isn&#x27;t the architecture. It&#x27;s monitoring, automated evaluation and a hardened rollout.</p>
+<h4>Terms on this slide</h4><dl>
+<dt>Session tracing</dt><dd>Agentforce&#x27;s per-session record of what the agent did: each turn, which topic and actions fired, latency, token cost, errors. The operational view.</dd>
+<dt>Activation separate from deploy</dt><dd>Pushing the code and switching the agent on are two distinct steps, so a deployment can&#x27;t accidentally put a new agent in front of customers.</dd>
+<dt>Deploy gate</dt><dd>A test suite wired into the release pipeline that blocks the release if it fails.</dd>
+<dt>Gradual rollout</dt><dd>Releasing to a small slice first — one clinic — and widening only once it holds.</dd>
+<dt>Lawful basis</dt><dd>Under GDPR, the legal ground for processing someone&#x27;s data. For health data the bar is higher, which is why consent has to be provable, not just present.</dd>
+</dl>
+<h4>If they ask</h4><dl class="qa">
+<dt>How do you know the agent is right, not just alive?</dt><dd>Aliveness is session tracing. Correctness is the evaluation suite plus human review of a sample. They&#x27;re different questions and they need different instruments.</dd>
+<dt>What would you alert on first?</dt><dd>The silent one — signal stopping. Everything else announces itself eventually; that one doesn&#x27;t.</dd>
+</dl>
+</article>
+<article id="ii-10">
+<div class="num">Slide 10 <span>&middot; 6 · Stakeholders · 7 · What I&#x27;d do differently</span></div>
+<h3>Stakeholder management</h3>
+<p class="head">&ldquo;Four people had a say in this build, and two of them changed it.&rdquo;</p>
+<p class="job"><b>What this slide is for.</b> Their stakeholder-management topic, plus the one honest change. Ninety seconds.</p>
+<h4>What to say</h4>
+<p><strong>The clinician, customer side.</strong> She wanted her patients protected. Where it rubbed: she said you cannot message a patient about her hearing without an explicit consent step. What I did: I stopped and rebuilt it as step zero rather than arguing my corner. She was right, and consent is now the first thing on screen in every demo since. This is the best story on the slide — a customer-side expert overruled my design and the build got better.</p>
+<p><strong>Their data owners.</strong> They wanted to know exactly what we would touch. Where it rubbed: I wanted to build, they wanted a data contract first. What I did: took the slower path — a separate call to pin down which fields we may read and act on, written down. It&#x27;s the only version that survives contact with legal.</p>
+<p><strong>Our account team.</strong> They owned the relationship and the story. Where it rubbed: the scenario kept wanting to grow, and there was a real question about how loudly to say what&#x27;s simulated. What I did: wrote the extras down as out of scope rather than debating each one, and labelled the simulated systems inside the demo itself.</p>
+<p><strong>Sonova&#x27;s sponsor.</strong> Where it rubbed: nothing — because we agreed in one sentence what it had to prove before I opened an editor. That sentence is the reason there was nothing to argue about at the end. That&#x27;s a stakeholder-management point, not luck.</p>
+<p><strong>The method, on the right:</strong> agree the one thing it must prove in writing first, so everything else becomes a scope question rather than an argument. When the customer&#x27;s expert overrules me, I change the design, not their mind. Say what&#x27;s simulated out loud. Write decisions down as they happen, so week ten doesn&#x27;t reopen week two.</p>
+<p><strong>Close on the honest change:</strong> I&#x27;d build the evaluation harness before the second agent. Checking by hand worked, but it doesn&#x27;t scale past one person — and it&#x27;s exactly what would have caught the empty-but-fluent reply in minutes rather than two days.</p>
+<h4>Terms on this slide</h4><dl>
+<dt>Data contract</dt><dd>A written agreement about which fields a system may read and write, and for what purpose. Slower than guessing and the only thing that survives a legal review.</dd>
+<dt>Step zero</dt><dd>Consent captured before any outreach, per channel, enforced in code — not a step somewhere in the middle of the flow.</dd>
+</dl>
+<h4>If they ask</h4><dl class="qa">
+<dt>Give me an example of pushing back on a customer.</dt><dd>The consent one is the opposite — I was overruled and accepted it. The pushback example is scope: the scenario wanted a second patient and a third channel, and I wrote both down as out of scope rather than quietly absorbing them.</dd>
+<dt>What if the clinician had been wrong?</dt><dd>Then I&#x27;d still have built it her way and written down that we disagreed. On a demo the cost is thirty minutes. On a live engagement, being right in the retrospective is worth nothing.</dd>
+</dl>
+</article>
+</section>
+<section id="iii"><h2 class="part">Part III</h2>
+<article id="iii-1">
+<div class="num">Slide 1 <span>&middot; Part III · the context</span></div>
+<h3>Jobcloud — the context</h3>
+<p class="head">&ldquo;Jobcloud runs jobs.ch. Most people who register browse for weeks, and then never apply.&rdquo;</p>
+<p class="job"><b>What this slide is for.</b> Sets the scene and frames the whole part. Thirty seconds, then the framing line.</p>
+<h4>What to say</h4>
+<p>Jobcloud operates jobs.ch — Switzerland&#x27;s largest job marketplace. It has two customers at once: the people looking for work, and the employers who pay to be seen by them. That two-sided structure matters later, when we get to ranking.</p>
+<p>My sponsor is Stefan, on the acquisition side. He owns getting seekers to register and apply, and he&#x27;s measured on three numbers: registrations, applications, engagement. Remember &#x27;three numbers&#x27; — one of them becomes the biggest risk in the engagement.</p>
+<p>The problem, in one human sentence: Romeo set his preferences when he registered — healthcare, Baselland. For the last two weeks he&#x27;s been searching for software roles in Zürich. Everything the platform sends him is wrong, and &#x27;where is my application?&#x27; has no good answer. So he browses and never applies — and that stalled group is where the whole commercial problem sits.</p>
+<p>The ask: an assistant on the website, later on WhatsApp, that answers where an application stands, suggests roles from what you actually do, manages your alerts — and when there&#x27;s genuinely no news, is still useful rather than silent.</p>
+<p><strong>Then the framing line, and say it deliberately:</strong> I ran the discovery call and built a demo of this, so I know their data and their constraints. But what follows is not that build. The brief asks me to design the approach, not the solution — so everything after this is how I&#x27;d run the twelve weeks, not a finished architecture.</p>
+<h4>Terms on this slide</h4><dl>
+<dt>Two-sided marketplace</dt><dd>A platform with two customer groups who need each other. Here: job seekers and employers. Employers pay, which creates a commercial pressure on what seekers are shown.</dd>
+<dt>Job alert</dt><dd>A saved search that emails the seeker when matching roles appear. Built from the preferences set at registration — which is exactly the stale data causing the problem.</dd>
+</dl>
+<h4>If they ask</h4><dl class="qa">
+<dt>Is this a real customer conversation?</dt><dd>Yes — a discovery call I ran, with notes. The demo I built afterwards is a pre-sales demo, not an implementation.</dd>
+<dt>Why not just fix the preferences form?</dt><dd>That&#x27;s the honest first question and worth conceding: a better form helps. It doesn&#x27;t solve &#x27;where is my application&#x27;, and it still relies on the seeker maintaining it. The behaviour is the better signal.</dd>
+</dl>
+</article>
+<article id="iii-2">
+<div class="num">Slide 2 <span>&middot; 1 · Use case selection</span></div>
+<h3>Use case selection</h3>
+<p class="head">&ldquo;Why I&#x27;d pick this one for Agentforce — and what would make me say no to any use case.&rdquo;</p>
+<p class="job"><b>What this slide is for.</b> Their first topic, both halves of it. Left side quickly; slow right down for the right side.</p>
+<h4>What to say</h4>
+<p><strong>Why it fits.</strong> First, the answer already exists in their data — where an application stands, what you searched for, which alerts you set. The work is retrieving and explaining it, not inventing it. That&#x27;s the single most important fit test.</p>
+<p>Second, it&#x27;s high volume, repetitive, and low stakes per answer. Thousands of people asking the same handful of questions in three languages. Nobody was ever going to staff that, so the agent replaces silence, not a person.</p>
+<p>Third, it&#x27;s a conversation, not a form. People ask this a dozen different ways. That&#x27;s exactly where a fixed interface runs out and a language model earns its place.</p>
+<p>Fourth, and this is the one people miss: it can still help when there&#x27;s no news. &#x27;Nothing has changed&#x27; can end with a suggestion or an offer. That&#x27;s what makes it an assistant rather than a status page.</p>
+<p><strong>Then slow down for the right side,</strong> because almost nobody opens a delivery plan with the reasons they&#x27;d say no. There&#x27;s only one right answer and a screen already gives it — that&#x27;s a lookup, not a conversation. The data isn&#x27;t there — if the answer isn&#x27;t in data we can reach and trust, the agent fills the gap itself, and no amount of wording fixes that. A wrong answer is costly and nobody can trace why — if no person sits between the model and the consequence and nobody can reconstruct how it answered, it&#x27;s the wrong use case. And nobody owns the answer or the number — if no named person can say an answer was right, there&#x27;s no way to improve it and no way to finish.</p>
+<p><strong>The verdict:</strong> yes, I&#x27;d take it. The human line is clean — you press send, not the agent. The data isn&#x27;t joined up yet, so building that foundation is phase one rather than something I assume. And the number we&#x27;d be scored on doesn&#x27;t exist. That last one is what week one is for. Let it hang; the next slide is why.</p>
+<h4>Terms on this slide</h4><dl>
+<dt>Agentforce</dt><dd>Salesforce&#x27;s platform for building AI agents that are grounded in company data and can take defined actions.</dd>
+<dt>Grounding</dt><dd>Anchoring an agent&#x27;s answer in retrieved company data rather than the model&#x27;s own memory. No grounding data means the model fills the gap itself.</dd>
+<dt>Deterministic lookup</dt><dd>A question with exactly one correct answer, reliably returned by ordinary code. An agent there is a more expensive way to be slower.</dd>
+<dt>Auditable</dt><dd>Someone can reconstruct afterwards why the system produced the answer it did. Required wherever the answer has consequences.</dd>
+</dl>
+<h4>If they ask</h4><dl class="qa">
+<dt>What&#x27;s the hardest of those four to judge up front?</dt><dd>Whether the data can carry the promise. Everyone says their data is fine. You only find out when you query it — which is why the data audit is in weeks two and three, not week ten.</dd>
+<dt>Would you ever take a use case where the data isn&#x27;t there?</dt><dd>Yes, but then the engagement is a data project with an agent at the end of it, and I&#x27;d say that out loud in week one rather than discover it in week eight.</dd>
+</dl>
+</article>
+<article id="iii-3">
+<div class="num">Slide 3 <span>&middot; 2 · Discovery</span></div>
+<h3>Discovery</h3>
+<p class="head">&ldquo;Before a single line of prompt: who I talk to, and what I&#x27;m actually listening for.&rdquo;</p>
+<p class="job"><b>What this slide is for.</b> Their discovery topic. Two full minutes — this is where engagements are won or lost.</p>
+<h4>What to say</h4>
+<p><strong>The sponsor.</strong> Stefan and the numbers he owns. Listening for: which of his three numbers he actually trusts. Everything I build has to move a number somebody already owns, otherwise there&#x27;s nothing to defend at the end.</p>
+<p><strong>The people who can say no.</strong> He doesn&#x27;t own the website — engineering does, and he wasn&#x27;t sure exactly who. The event tracking stays; that was decided above him. Legal blocks reading CVs — only structured fields a human has reviewed. Listening for: who can stop this, and on what grounds. That&#x27;s a finding, not a footnote.</p>
+<p><strong>Where the truth lives, and where it doesn&#x27;t.</strong> Fifteen event types carry the whole idea. Many applications finish on the employer&#x27;s own system, invisible to us. And the tell I listen for is the word <em>usually</em> — &#x27;usually the status updates within a day&#x27;. Usually is where an agent breaks, because the agent will state the usual case as fact.</p>
+<p><strong>Five real job seekers, twenty minutes each.</strong> Listening for the words they actually use. It has to answer the question they ask, in three languages, not the question the product team thinks they ask.</p>
+<p><strong>Then tell the KPI trap as a story</strong> — this is the strongest thing in Part III. On the call I said: if this assistant is genuinely good, people get what they need without browsing the site, so web traffic goes down. And web traffic is one of the three numbers I&#x27;d be judged on. Their answer was that the traffic figure isn&#x27;t labelled accurately anyway, and what they really need is to know where visits actually come from.</p>
+<p><strong>So:</strong> one of the three numbers scoring my work is a number the business itself doesn&#x27;t trust — and the better my work, the worse it looks. That makes week one about attribution and a written baseline, before anything is built that gets scored against it. Every other unknown gets the same treatment: a name, a date, and a read-out at each gate. An assumption I can&#x27;t verify becomes a written boundary, not a quiet hope.</p>
+<h4>Terms on this slide</h4><dl>
+<dt>Event tracking</dt><dd>The system recording what visitors do on the site — searches, clicks, applications. Theirs stays; I add to that pipe rather than replace it.</dd>
+<dt>Attribution</dt><dd>Working out where a visit actually came from. If it&#x27;s wrong, traffic numbers are unreliable — which is exactly the problem here.</dd>
+<dt>Baseline</dt><dd>The agreed measurement of where things stand before the work starts. Without it, nobody can prove the engagement did anything.</dd>
+<dt>Event type</dt><dd>A category of recorded behaviour, e.g. &#x27;search performed&#x27;, &#x27;job saved&#x27;, &#x27;application submitted&#x27;. Fifteen of them carry the whole idea.</dd>
+</dl>
+<h4>If they ask</h4><dl class="qa">
+<dt>Why talk to five seekers rather than run a survey?</dt><dd>Because I need the words they use, not scores. Twenty minutes each beats a month of assumptions about how people phrase a question.</dd>
+<dt>What if the sponsor won&#x27;t fix the number?</dt><dd>Then I&#x27;d rescope — build toward a number we can agree on, or say plainly that the engagement can&#x27;t be scored and let him decide with that on the table. What I won&#x27;t do is build for twelve weeks against a metric nobody trusts.</dd>
+</dl>
+</article>
+<article id="iii-4">
+<div class="num">Slide 4 <span>&middot; 3 · Solution design</span></div>
+<h3>Solution design</h3>
+<p class="head">&ldquo;Add to what they already run. Keep judgement where it can be explained afterwards.&rdquo;</p>
+<p class="job"><b>What this slide is for.</b> Their components question and, more importantly, what you would NOT use Agentforce for. Ninety seconds.</p>
+<h4>What to say</h4>
+<p><strong>Left to right in one sentence:</strong> their systems stay exactly as they are, I add the profile, the agent sits on top of it, and people meet it where they already are.</p>
+<p><strong>What they already run</strong> stays: the website tracking, the jobs and applications platform. Employers&#x27; own systems are where we go blind, and that&#x27;s risk two.</p>
+<p><strong>Phase one is the foundation:</strong> one profile per person in Data 360 — searches, saves, applications, alerts — with identity resolution turning an anonymous visitor into a known person the moment they log in. I&#x27;m explicit that this is phase one and not something I assume already exists.</p>
+<p><strong>Then the Agentforce components, and name them:</strong> Topics, one per job to be done — my applications, find me roles, manage my alerts. Actions in Apex and Flow, each one a defined job with a fixed shape. A Data Library for their own help content, for the questions that aren&#x27;t about you specifically. And prompt templates with Agent Script — the wording, versioned, scripted where it has to be exact.</p>
+<p><strong>Channels:</strong> chat on jobs.ch first, replying to the email second — that was their idea from the call — and WhatsApp later, with its own consent.</p>
+<p><strong>Then the footline, plainly, because it&#x27;s the part they asked for.</strong> Four jobs I deliberately keep away from the model. Which job ranks first: employers pay for placement, so ranking has to be a rule I can show a regulator, not a judgement inside a prompt. Whether we&#x27;re allowed to message you: that&#x27;s a consent record, not a decision. Pressing send on an application. And noticing the data stopped flowing — that&#x27;s monitoring, a chart and an alert, not an agent.</p>
+<p>The principle underneath: code for what must be provable, the model for what must be flexible.</p>
+<h4>Terms on this slide</h4><dl>
+<dt>Topic</dt><dd>A bounded area of responsibility inside an agent, with its own instructions and its own set of actions. Keeps the agent&#x27;s reasoning scoped.</dd>
+<dt>Action</dt><dd>A defined operation the agent can invoke — Apex or Flow. Deterministic: the agent decides whether to call it, the action decides what happens.</dd>
+<dt>Data Library</dt><dd>A retrieval store of documents — here, their own help content — the agent can search to answer general questions. Retrieval-augmented generation, in Salesforce&#x27;s packaging.</dd>
+<dt>Prompt template</dt><dd>A versioned, reviewable template for what the model is asked, rather than wording buried in configuration.</dd>
+<dt>Agent Script</dt><dd>The scripted layer for turns that must go exactly one way, with model reasoning around it for the parts that benefit from flexibility.</dd>
+<dt>Messaging for In-App and Web</dt><dd>The Salesforce channel that puts a chat window inside a website or app.</dd>
+</dl>
+<h4>If they ask</h4><dl class="qa">
+<dt>Why not let the agent rank jobs? It&#x27;d be better at it.</dt><dd>Possibly — but employers pay for placement. Ranking is a commercial and regulatory decision, and it has to be a rule I can show someone. The agent can explain the ranking and act on it. It must not be the ranking.</dd>
+<dt>Isn&#x27;t Data Library just RAG?</dt><dd>Yes, essentially — retrieval over their documents, packaged into the platform. I&#x27;d use it for general help content and keep anything about a specific person in the structured actions instead.</dd>
+<dt>Why not WhatsApp from day one?</dt><dd>Consent. WhatsApp is a separate permission from email, and the stated hope was to use it to reach people who&#x27;d unsubscribed. That&#x27;s risk three.</dd>
+</dl>
+</article>
+<article id="iii-5">
+<div class="num">Slide 5 <span>&middot; 4 · Scoping &amp; definition of done</span></div>
+<h3>Scope, and what done means</h3>
+<p class="head">&ldquo;Twelve weeks, four gates. Every gate is a chance to stop cheaply.&rdquo;</p>
+<p class="job"><b>What this slide is for.</b> Their scoping topic, mapped across the ADLC. Timeline in thirty seconds, then spend the time on &#x27;done&#x27;.</p>
+<h4>What to say</h4>
+<p><strong>Name the framework:</strong> this maps onto Salesforce&#x27;s Agent Development Lifecycle — five phases, an inner loop where you build and test, and an outer loop of monitoring and tuning that starts at release and never stops.</p>
+<p><strong>The timeline in thirty seconds.</strong> Week one is a gate: simplest possible agent, one trivial action, permissions proven, and the number we&#x27;re judged on agreed in writing. Weeks two and three: design, don&#x27;t build — what data exists, what the assistant may do, where it hands to a human, and an audit of the tracking it all rests on. Week four is a gate: scope locked, one audience, one channel, one language, definition of done signed. Weeks five to seven: the profile foundation first, the assistant on top, rules settled before anyone writes wording. Week eight is a gate: first honest end-to-end in their environment with their data, around thirty real seeker questions with expected behaviour. Weeks nine and ten: test and harden. Weeks eleven and twelve: release and hand over.</p>
+<p><strong>In scope:</strong> one audience, one channel, one language — registered seekers, chat on a surface Stefan controls, German first. Three capabilities: where is my application, suggest me roles, manage my alerts. And the profile foundation underneath, because none of the three work without it.</p>
+<p><strong>Deliberately not in scope:</strong> WhatsApp, French and English until the first channel and language are genuinely good. Anything employer-facing — different audience, different contract, different project. Ranking, CVs and pressing send: the first two belong in code, the third stays with the person.</p>
+<p><strong>Then spend your time on &#x27;done&#x27;, because this is the forward-deployed mindset.</strong> Done is not &#x27;it works&#x27;. Done is they can own it without me. Their engineer adds a test case, edits an action, deploys it — while I sit quietly and watch. If they can&#x27;t do that in front of me, we aren&#x27;t done. The tests live in their repository and their pipeline, not on my laptop. There&#x27;s a runbook for the three things that will go wrong — the data stops, quality drops, someone complains about the tone — each with a named owner. And the number is being reported without me: the dashboard exists, one person owns it, and somebody has read it before I leave.</p>
+<h4>Terms on this slide</h4><dl>
+<dt>ADLC</dt><dd>Agent Development Lifecycle — Salesforce&#x27;s framework: ideation and design, development, testing and validation, release, then monitoring and tuning. The last one is a loop, not a finish line.</dd>
+<dt>Inner loop / outer loop</dt><dd>Inner loop is the fast build-test cycle during development. Outer loop is what happens after release — monitoring, tuning, retesting — and it never ends.</dd>
+<dt>Gate</dt><dd>A scheduled decision point where the engagement can stop or change direction cheaply, rather than discovering the problem at the end.</dd>
+<dt>Definition of done</dt><dd>Written, agreed criteria for what finished means. Here it&#x27;s ownership, not functionality.</dd>
+</dl>
+<h4>If they ask</h4><dl class="qa">
+<dt>Twelve weeks feels short for all that.</dt><dd>It is — which is why scope is one audience, one channel, one language and three capabilities. The foundation is the expensive part; the assistant on top is comparatively cheap.</dd>
+<dt>What if week eight fails the quality bar?</dt><dd>Then we use the gate. Either we narrow to the capabilities that do clear it, or we stop. That&#x27;s what the gate is for, and it&#x27;s much cheaper in week eight than week twelve.</dd>
+<dt>Why German first?</dt><dd>Largest audience, and it forces the hardest language question early rather than leaving it as a surprise.</dd>
+</dl>
+</article>
+<article id="iii-6">
+<div class="num">Slide 6 <span>&middot; 4 · Definition of done — quality</span></div>
+<h3>How I&#x27;d prove it works</h3>
+<p class="head">&ldquo;Demo rigour gets you a working demo. Delivery rigour is a different bar.&rdquo;</p>
+<p class="job"><b>What this slide is for.</b> How quality is proven and handed over. Ninety seconds. Open from strength.</p>
+<h4>What to say</h4>
+<p><strong>Open from strength:</strong> I already build this way in Agentforce DX — authoring bundles, the CLI, preview and traces, test specs sitting in the repository next to the code. What a twelve-week engagement adds isn&#x27;t new tooling. It&#x27;s cadence, coverage, and someone accountable for the result.</p>
+<p><strong>The table is the idea.</strong> Normal software: one input, one correct output, you assert they match. It breaks loudly — the test goes red. You test the output. An agent: the same question arrives a hundred ways and several answers are equally fine. It stays warm and confident while being completely wrong. So you test the <em>behaviour</em> — right topic, right action, real data.</p>
+<p><strong>Two ways to run the same tests.</strong> Agentforce Testing Center, in the org, for the team: a set of real seeker questions, uploaded as a spreadsheet or generated from the agent&#x27;s own configuration. For each one you say what should happen — which topic handles it, which actions fire, roughly what comes back. Run the batch, read the scores, export the failures and work through them with the customer&#x27;s own team. That&#x27;s how they stay involved in quality rather than trusting mine.</p>
+<p><strong>And Agentforce DX, in the repository, for the pipeline.</strong> The same tests as a file — <code>sf agent generate test-spec</code> writes YAML I edit by hand and keep beside the code. Create and run them from the command line. Then wire it into the build, so a change that breaks the agent fails the build. The release stops before a broken answer ever reaches a job seeker.</p>
+<p><strong>The five layers,</strong> running from week five rather than bolted on at the end: unit, end-to-end, adversarial, human review, load.</p>
+<p><strong>And one thing I&#x27;d verify in week one:</strong> the documentation isn&#x27;t consistent about how much of the automated testing covers German and French today. My agent has to. If that layer is English-only, human review becomes the only real coverage for the languages that actually ship. That&#x27;s a week-one action, not an assumption — and it&#x27;s the strongest thing on the slide, because it shows you read the docs properly.</p>
+<h4>Terms on this slide</h4><dl>
+<dt>Agentforce Testing Center</dt><dd>The in-org tool for running batches of test questions against an agent and scoring whether the right topic and actions fired.</dd>
+<dt>Test spec</dt><dd>A YAML file describing test cases — the question, the expected topic, the expected actions. Lives in the repository next to the code.</dd>
+<dt>Adversarial testing</dt><dd>Deliberately trying to break it — asking for someone else&#x27;s applications, or for a salary figure that isn&#x27;t in the data.</dd>
+<dt>Load testing</dt><dd>Checking the answer still arrives inside the conversation at peak volume. Right but slow is useless in a chat.</dd>
+<dt>JUnit format</dt><dd>A standard machine-readable test-result format, which is what lets a build pipeline understand pass or fail.</dd>
+</dl>
+<h4>If they ask</h4><dl class="qa">
+<dt>Have you run these tests yourself?</dt><dd>I&#x27;ve written the test specs and evaluation definitions on another build and wired the loop into my workflow. I have not run a full regression suite across versions — that&#x27;s exactly the discipline a real engagement adds.</dd>
+<dt>Why not just have a model grade the answers?</dt><dd>Because a fluent reply is what fools a model grader. Use it for tone at scale, on top of hard assertions about the action&#x27;s real inputs and outputs — never instead of them.</dd>
+</dl>
+</article>
+<article id="iii-7">
+<div class="num">Slide 7 <span>&middot; 5 · Risks</span></div>
+<h3>Three risks</h3>
+<p class="head">&ldquo;Three things that would derail this — and what week one does about each.&rdquo;</p>
+<p class="job"><b>What this slide is for.</b> Their risks topic, each paired with a concrete week-one action. Ninety seconds, and it closes Part III.</p>
+<h4>What to say</h4>
+<p><strong>Risk one — measurement. The number nobody trusts.</strong> One of the three goals is website traffic, and they told me that figure isn&#x27;t labelled accurately. And a genuinely good assistant also pushes it down. Both are true at once. Week one: first work out where visits actually come from, then agree in writing which number this is judged on — and accept that traffic isn&#x27;t it.</p>
+<p><strong>Risk two — data. The applications we can&#x27;t see.</strong> Many applications finish on the employer&#x27;s own system, where we have no visibility. An assistant that says &#x27;no update&#x27; there is misleading someone who is waiting on a job. Week one: measure what share leaves the platform, and design the honest answer for that path before building the easy one. Where we don&#x27;t know, the agent says so rather than guessing.</p>
+<p><strong>Risk three — consent. Reaching people who opted out.</strong> The stated hope on the call was to use chat and WhatsApp to reach people who&#x27;d unsubscribed from email. That&#x27;s a compliance incident being written as a requirement. Week one: consent per channel, enforced in the data and in code, never in an instruction. A rule you can show a regulator. This is the one that separates an engineer from a demo-builder — the customer asked for something that would get them into trouble, and the job is to write the guardrail instead of the feature.</p>
+<p><strong>Then close the hour</strong> by tying it back to Part II. The failure class I&#x27;d design the tests around: on one of my own builds a missing Apex permission made the runtime silently skip an action — so the agent invented a customer ID, lifting &#x27;Romeo&#x27; out of an email address and fabricating S0004442. Fluent, confident, entirely made up. So the evaluations assert on the action&#x27;s real inputs and outputs, not on whether the reply reads well. That&#x27;s the thesis, made testable.</p>
+<h4>Terms on this slide</h4><dl>
+<dt>Compliance incident</dt><dd>A breach of data-protection rules — here, messaging someone on a channel they haven&#x27;t consented to. Fines and reputational damage, and it would be entirely self-inflicted.</dd>
+<dt>Consent per channel</dt><dd>Email, web chat and WhatsApp are three separate permissions. Consent for one is not consent for another.</dd>
+<dt>Silent skip</dt><dd>The runtime declines to run an action — usually a permission problem — without raising an error the agent can see. The model then answers from nothing.</dd>
+</dl>
+<h4>If they ask</h4><dl class="qa">
+<dt>What if the customer insists on the WhatsApp plan?</dt><dd>I&#x27;d put it in writing once, with what I&#x27;d do instead and what it costs. If they still insist, that&#x27;s a decision for their legal team, not mine — and I&#x27;d want that decision recorded. What I won&#x27;t do is build it quietly and let the audit find it.</dd>
+<dt>Only three risks?</dt><dd>These are the three that would kill it. Delivery risks — scope, availability of their engineers — are real but manageable. These three aren&#x27;t manageable without a week-one action.</dd>
+</dl>
+</article>
+</section>
+</main></div></body></html>
